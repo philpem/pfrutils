@@ -1,0 +1,10 @@
+syntax: glob
+
+# editor temporary files
+*~
+.*.sw?
+
+# output files
+*.o
+cfr_morph
+
