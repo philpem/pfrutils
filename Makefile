@@ -20,6 +20,10 @@ CFLAGS=-fmessage-length=0 \
 
 all: cfr_morph
 
+clean:
+	-rm -f cfr_morph cfr_morph.o
+	-rm -f common/hexdump.o common/filmtable_crypt.o
+
 cfr_morph:	common/filmtable_crypt.o cfr_morph.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
