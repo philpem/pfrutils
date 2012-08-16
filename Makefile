@@ -14,7 +14,10 @@ CFLAGS=-fmessage-length=0 \
 	-Wno-unused-parameter \
 	-Wuninitialized \
 	-Wold-style-definition \
-	-Wstrict-prototypes
+	-Wstrict-prototypes \
+	-Wstrict-overflow=5 \
+	-Wshadow \
+	-Wfloat-equal
 
 .PHONY: all clean
 
