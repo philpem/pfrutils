@@ -95,7 +95,9 @@ int main(int argc, char **argv)
 
 	filmtable_crypto_init();
 	while (!feof(fi)) {
-		unsigned char c = fgetc(fi);
+		int c = fgetc(fi);
+		if (c == EOF)
+			break;
 
 		if (encrypt) {
 			c = filmtable_crypto_encrypt(c);
