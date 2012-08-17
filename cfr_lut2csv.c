@@ -32,7 +32,7 @@ void usage(const char *progname)
 
 int main(int argc, char **argv)
 {
-	bool encrypted = false;
+	bool encrypted = true;
 	char infn[512] = "";
 	FILE *fi;
 	unsigned char *filmtable;
@@ -123,6 +123,9 @@ int main(int argc, char **argv)
 		for (i=0; i<filmtab_len; i++)
 			filmtable[i] = filmtable_crypto_decrypt(filmtable[i]);
 	}
+
+	// Output the film name
+	printf("# %s: %-24s\n", infn, (char *)filmtable);
 
 	// Now decode the delta data
 	unsigned int k, r, g, b;
