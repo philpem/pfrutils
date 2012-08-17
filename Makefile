@@ -21,7 +21,7 @@ CFLAGS=-fmessage-length=0 \
 
 .PHONY: all clean
 
-all: cfr_morph
+all: cfr_morph cfr_lut2csv
 
 clean:
 	-rm -f cfr_morph cfr_morph.o
@@ -30,3 +30,5 @@ clean:
 cfr_morph:	common/filmtable_crypt.o cfr_morph.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
+cfr_lut2csv:	common/filmtable_crypt.o cfr_lut2csv.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^

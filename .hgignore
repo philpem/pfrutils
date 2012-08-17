@@ -7,4 +7,7 @@ syntax: glob
 # output files
 *.o
 cfr_morph
+cfr_lut2csv
 
+# film tables
+films/*
