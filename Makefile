@@ -26,17 +26,17 @@ all: cfr_morph cfr_lut2csv cfr_ft_dump
 clean:
 	-rm -f cfr_morph cfr_morph.o
 	-rm -f cfr_lut2csv cfr_lut2csv.o
-	-rm -f common/hexdump.o common/filmtable_crypt.o
+	-rm -f common/hexdump.o common/filmtable.o
 
 tidy:
 	-rm *~
 
-cfr_morph:	common/filmtable_crypt.o cfr_morph.o
+cfr_morph:	common/filmtable.o cfr_morph.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
-cfr_lut2csv:	common/filmtable_crypt.o cfr_lut2csv.o
+cfr_lut2csv:	common/filmtable.o cfr_lut2csv.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
-cfr_ft_dump:	common/filmtable_crypt.o cfr_ft_dump.o
+cfr_ft_dump:	common/filmtable.o cfr_ft_dump.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 

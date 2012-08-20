@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include "common/filmtable_crypt.h"
+#include "common/filmtable.h"
 #include "common/hexdump.h"
 
 /**
