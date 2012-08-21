@@ -26,6 +26,7 @@ all: cfr_morph cfr_lut2csv cfr_ft_dump
 clean:
 	-rm -f cfr_morph cfr_morph.o
 	-rm -f cfr_lut2csv cfr_lut2csv.o
+	-rm -f cfr_ft_dump cfr_ft_dump.o
 	-rm -f common/hexdump.o common/filmtable.o
 
 tidy:
