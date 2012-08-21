@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <malloc.h>
 #include <string.h>
+#include <strings.h>
+#include "common/filmtable.h"
 
 typedef enum {
 	CT_PACKFILM	= 0,		// Instant "pack" film
@@ -40,7 +43,7 @@ typedef struct {
 	CFR_FT_LUT_ENTRY	lut[256];
 } CFR_FILMTABLE;
 
-int filmtable_read(FILE *fp, CFR_FILMTABLE *ft)
+int filmtable_read(FILE *fp, CFR_FILMTABLE *ft, bool encrypted)
 {
 	unsigned char *buf;
 	size_t len, i;
@@ -62,6 +65,14 @@ int filmtable_read(FILE *fp, CFR_FILMTABLE *ft)
 	if (fread(buf, 1, len, fp) != len) {
 		free(buf);
 		return -1;
+	}
+
+	// decrypt filmtable if necessary
+	if (encrypted) {
+		filmtable_crypto_init();
+		for (i=0; i<len; i++) {
+			buf[i] = filmtable_crypto_decrypt(buf[i]);
+		}
 	}
 
 	// 108 byte header, 1024 byte lut
@@ -122,9 +133,14 @@ int main(int argc, char **argv)
 
 	for (i=1; i<argc; i++) {
 		CFR_FILMTABLE table;
+		unsigned long lutmax[4];
+		bool encrypted = false;
+
+		if (strcasecmp(&argv[i][strlen(argv[i])-4], ".flm") == 0)
+			encrypted = true;
 
 		fp = fopen(argv[i], "rb");
-		if (filmtable_read(fp, &table) == 0) {
+		if (filmtable_read(fp, &table, encrypted) == 0) {
 			printf("---> %s\n", argv[i]);
 			printf("Name: %-24s\n", table.header.name);
 			printf("CameraType: %d\n", table.header.cameraType);
@@ -140,7 +156,18 @@ int main(int argc, char **argv)
 						table.header.unknownB[j].b
 					  );
 			}
-			// TODO: LUT max value for each channel
+
+			// Calculate maximum value in each LUT
+			memset(&lutmax, '\0', sizeof(lutmax));
+			for (j=0; j<256; j++) {
+				lutmax[0] += table.lut[j].dR;
+				lutmax[1] += table.lut[j].dG;
+				lutmax[2] += table.lut[j].dB;
+				lutmax[3] += table.lut[j].dummy;
+			}
+
+			printf("LUTMax: %lu %lu %lu %lu\n", lutmax[0], lutmax[1], lutmax[2], lutmax[3]);
+			printf("\n\n");
 		}
 	}
 
