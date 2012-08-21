@@ -19,6 +19,12 @@ CFLAGS=-fmessage-length=0 \
 	-Wshadow \
 	-Wfloat-equal
 
+DEV?=true
+
+ifeq ($(DEV),true)
+  CFLAGS+=-ggdb
+endif
+
 .PHONY: all tidy clean
 
 all: cfr_morph cfr_lut2csv cfr_ft_dump
